@@ -5,7 +5,7 @@ storage {
 }
 
 abi Counter {
-    #[storage(read, write)]
+    #[storage(read, write), payable]
     fn increment();
 
     #[storage(read)]
@@ -18,7 +18,7 @@ impl Counter for Contract {
         storage.counter.read()
     }
 
-    #[storage(read, write)]
+    #[storage(read, write), payable]
     fn increment() {
         let incremented = storage.counter.read() + 1;
         storage.counter.write(incremented);

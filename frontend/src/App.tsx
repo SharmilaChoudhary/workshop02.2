@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { CounterContractAbi__factory } from './contracts';
-
-const CONTRACT_ID =
-  '0x59462eb8a403bccdea02d9dc81e12bf517ece21b638c2c8b33f84529410221b7';
+import {bn} from 'fuels';
+const CONTRACT_ID ='0x01f04e28dc774fd95c71a2e4ac3e388574536a4ec7fb0a30';
 
 function App() {
   const [account, setAccount] = useState<string>();
@@ -53,7 +52,10 @@ function App() {
       const wallet = await window.fuel.getWallet(account);
       const contract = CounterContractAbi__factory.connect(CONTRACT_ID, wallet);
       await contract.functions
-        .increment()
+        .increment().callParams({
+          forward:{amount:bn(100)},
+          gasLimit: 1,
+        })
         .txParams({
           gasPrice: 1,
         })
@@ -70,6 +72,7 @@ function App() {
         <div>
           <p>Counter: {count}</p>
           <button onClick={increment}> Increment </button>
+          
         </div>
       ) : (
         <button onClick={connect}>Connect</button>
